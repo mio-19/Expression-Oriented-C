@@ -11,13 +11,24 @@
 {define ... "..."}
 {define VA_ARGS "__VA_ARGS__"}
 
+{define-syntax DEFINE-FUNC
+  {syntax-rules (: ->)
+    [(_ (f) -> result body) (LINE result" "f"(void){"body"}")]
+    [(_ prefix (f) -> result body) (LINE prefix" "result" "f"(void){"body"}")]
+    [(_ prefix (f (arg : type) ...) -> result body) (LINE prefix" "result" "f"("(LIST (++ type" "arg) ...)"){"body"}")]
+    [(_ (f (arg : type) ...) -> result body) (LINE result" "f"("(LIST (++ type" "arg) ...)"){"body"}")]}}
+
 {define temp1 "___EOC___temp___VARIABLE___1___"}
+{define local-inline "static inline"}
+
+{define Void "void"}
 
 {define prelude
   (BEGIN
    (DEFINE ("begin" "body") "({body})")
    (DEFINE ("start" "body") "{return ({body});}")
    (DEFINE ("the" "type" "value") (++ "({type "temp1"=value;"temp1"})"))
+   (DEFINE-FUNC local-inline ("mkvoid") -> Void "")
    )}
 
 (display-to-file prelude "prelude.h" #:exists 'replace)
