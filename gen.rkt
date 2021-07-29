@@ -28,7 +28,8 @@
    (DEFINE "let" "auto")
    (DEFINE ("begin" "body") "({body})")
    (DEFINE ("start" "body") "{return ({body});}")
-   (DEFINE ("the" "type" "value") (++ "({type "temp1"=value;"temp1"})"))
+   (DEFINE ("the" "type" "value") (++ "({(type) "temp1"=(value);"temp1"})"))
+   (DEFINE ("as" "type" "value") "(type)(value)")
    (DEFINE-FUNC local-inline ("mkvoid") -> Void "")
    )}
 
