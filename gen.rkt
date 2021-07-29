@@ -7,7 +7,7 @@
 {define-syntax DEFINE
   {syntax-rules ()
     [(_ (f arg ...) body) (LINE "#define "f"("(LIST arg ...)") "body)]
-    [(_ id x) (LINE "#define "f" "x)]}}
+    [(_ id x) (LINE "#define "id" "x)]}}
 {define ... "..."}
 {define VA_ARGS "__VA_ARGS__"}
 
@@ -25,6 +25,7 @@
 
 {define prelude
   (BEGIN
+   (DEFINE "let" "auto")
    (DEFINE ("begin" "body") "({body})")
    (DEFINE ("start" "body") "{return ({body});}")
    (DEFINE ("the" "type" "value") (++ "({type "temp1"=value;"temp1"})"))
