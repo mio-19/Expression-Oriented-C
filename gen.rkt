@@ -64,13 +64,6 @@
 
 {define prelude
   (BEGIN
-
-   (LINE "#ifdef __cplusplus")
-   prelude-cpp
-   (LINE "#else")
-   prelude-gcc
-   (LINE "#endif")
-   
    PP_NARG
    (apply ++ (map (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))) (range 1 N)))
    (DEFINE ((++ $"concat0") "x" "y") "x##y")
@@ -88,6 +81,13 @@
 
    ;;(DEFINE ("case" "type" "x") (++ "({(type) "temp1";switch(x){"$"case_helper"))
    ;;(DEFINE ((++ $"case_helper") ...) (++ $"map("$"case_helper_each,"VA_ARGS")"))
+
+   (LINE "#ifdef __cplusplus")
+   prelude-cpp
+   (LINE "#else")
+   prelude-gcc
+   (LINE "#endif")
+   
    )}
 
 (display-to-file prelude "prelude.h" #:exists 'replace)
