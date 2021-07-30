@@ -71,7 +71,7 @@
    (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
    
    (DEFINE ((++ $"infer_helper_each") "x") "x;")
-   (DEFINE ((++ $"infer_helper") ...) (++ $"map("$"infer_helper_each",VA_ARGS))
+   (DEFINE ((++ $"infer_helper") ...) (++ $"map("$"infer_helper_each",VA_ARGS")"))
    (DEFINE ((++ $"infer") "args" "body") (++ "typeof(({"$"infer_helper args body;}))"))
    (DEFINE ((++ $"lambda_infer") "args" "body") (++ "({"$"infer(args, body) "temp1" args{return ({body;});}"temp1";})"))
    ;; https://stackoverflow.com/questions/49979458/how-to-curry-a-c-c-macro/49979765#49979765

@@ -88,7 +88,7 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}___EOC___temp___VARIABLE___1___;})
 #define lambda_returns(type,...) ___EOC___internal___WAHAHA___lambda(type,(__VA_ARGS__))
 #define ___EOC___internal___WAHAHA___infer_helper_each(x) x;
-#define ___EOC___internal___WAHAHA___infer_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___infer_helper_each,##__VA_ARGS__
+#define ___EOC___internal___WAHAHA___infer_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___infer_helper_each,##__VA_ARGS__)
 #define ___EOC___internal___WAHAHA___infer(args,body) typeof(({___EOC___internal___WAHAHA___infer_helper args body;}))
 #define ___EOC___internal___WAHAHA___lambda_infer(args,body) ({___EOC___internal___WAHAHA___infer(args, body) ___EOC___temp___VARIABLE___1___ args{return ({body;});}___EOC___temp___VARIABLE___1___;})
 #define ___EOC___internal___WAHAHA___LPAREN() (
