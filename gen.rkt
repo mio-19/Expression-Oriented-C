@@ -57,12 +57,12 @@
 {define prelude-cpp
   (BEGIN
    (DEFINE "let" "auto")
-   (DEFINE ((++ $"lambda") "type" "args") (++ "[&]args->type "$"lambda_helper"))
-   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"))
+   (DEFINE ((++ $"lambda") "type" "args") (++ "([&]args->type "$"lambda_helper"))
+   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});})"))
    (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
 
    ;;(DEFINE ("lambda" ...) (++ "[&]args "$"lambda_helper"))
-   (DEFINE ("function" "args" "body") "[&]args{return ({body;});}"))}
+   (DEFINE ("function" "args" "body") "([&]args{return ({body;});})"))}
 {define prelude-gcc
   (BEGIN
    (DEFINE "let" "__auto_type")
