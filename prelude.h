@@ -74,9 +74,6 @@
 #define the(type,value) ({(type) ___EOC___temp___VARIABLE___1___=(value);___EOC___temp___VARIABLE___1___})
 #define as(type,value) (type)(value)
 static inline void mkvoid(void){}
-#define when(b) ((b)?___EOC___internal___WAHAHA___when_helper
-#define ___EOC___internal___WAHAHA___when_helper(body) ({body;}):___EOC___internal___WAHAHA___when_helper_2
-#define ___EOC___internal___WAHAHA___when_helper_2(body) ({body;}))
 #ifdef __cplusplus
 #define let auto
 #define ___EOC___internal___WAHAHA___lambda(type,args) ([&]args->type ___EOC___internal___WAHAHA___lambda_helper
@@ -93,3 +90,13 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___infer(args,body) typeof(({___EOC___internal___WAHAHA___infer_helper args body;}))
 #define function(args,body) ({___EOC___internal___WAHAHA___infer(args, body) ___EOC___temp___VARIABLE___1___ args{return ({body;});}___EOC___temp___VARIABLE___1___;})
 #endif
+#define when(b) ((b)?___EOC___internal___WAHAHA___when_helper
+#define ___EOC___internal___WAHAHA___when_helper(body) ({body;}):___EOC___internal___WAHAHA___when_helper_2
+#define ___EOC___internal___WAHAHA___when_helper_2(body) ({body;}))
+#define case_the(type,x) ({(type) ___EOC___temp___VARIABLE___1___;switch(x){___EOC___internal___WAHAHA___case_helper
+#define case(x) case_the(let,x)
+#define ___EOC___internal___WAHAHA___case_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___case_helper_each,##__VA_ARGS__)}___EOC___temp___VARIABLE___1___;})
+#define ___EOC___internal___WAHAHA___case_helper_each(condition,body) ___EOC___internal___WAHAHA___concat(___EOC___internal___WAHAHA___case_helper_cond,condition)___EOC___temp___VARIABLE___1___=({body;});break;
+#define ___EOC___internal___WAHAHA___case_helper_cond_default default:
+#define ___EOC___internal___WAHAHA___case_helper_cond(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___case_helper_cond_each,__VA_ARGS__)
+#define ___EOC___internal___WAHAHA___case_helper_cond_each(x) case (x):

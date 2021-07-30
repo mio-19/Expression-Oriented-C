@@ -4,10 +4,11 @@
 {define (LIST . xs) (string-join xs ",")}
 {define ++ string-append}
 {define-syntax-rule (BEGIN x ...) (string-append x ...)}
+{define-syntax-rule (DEFINE-V id x) (LINE "#define "id" "x)}
 {define-syntax DEFINE
   {syntax-rules ()
     [(_ (f arg ...) body) (LINE "#define "f"("(LIST arg ...)") "body)]
-    [(_ id x) (LINE "#define "id" "x)]}}
+    [(_ id x) (DEFINE-V id x)]}}
 {define ... "..."}
 {define VA_ARGS "__VA_ARGS__"}
 {define ,VA_ARGS ",##__VA_ARGS__"}
@@ -19,7 +20,10 @@
     [(_ prefix (f (arg : type) ...) -> result body) (LINE prefix" "result" "f"("(LIST (++ type" "arg) ...)"){"body"}")]
     [(_ (f (arg : type) ...) -> result body) (LINE result" "f"("(LIST (++ type" "arg) ...)"){"body"}")]}}
 
+{define (APP f . xs) (++ f"("(apply LIST xs)")")}
+
 {define $ "___EOC___internal___WAHAHA___"}
+{define (+$ . xs) (apply ++ (cons $ xs))}
 
 {define temp1 "___EOC___temp___VARIABLE___1___"}
 {define local-inline "static inline"}
@@ -88,21 +92,14 @@
   (BEGIN
    PP_NARG
    (for-N (λ (n) (DEFINE ((++ $"map_"(~ n)) (apply LIST (cons "f" (map (λ (x) (++ "n"(~ x))) (range n))))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))))
-   (DEFINE ((++ $"concat0") "x" "y") "x##y")
-   (DEFINE ((++ $"concat") "x" "y") (++ $"concat0(x,y)"))
-   (DEFINE ((++ $"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
+   (DEFINE ((+$"concat0") "x" "y") "x##y")
+   (DEFINE ((+$"concat") "x" "y") (++ $"concat0(x,y)"))
+   (DEFINE ((+$"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
    (DEFINE ("begin" "body") "({body;})")
    (DEFINE ("start" "body") "{return ({body;});}")
    (DEFINE ("the" "type" "value") (++ "({(type) "temp1"=(value);"temp1"})"))
    (DEFINE ("as" "type" "value") "(type)(value)")
    (DEFINE-FUNC local-inline ("mkvoid") -> Void "")
-
-   (DEFINE ("when" "b") (++ "((b)?"$"when_helper"))
-   (DEFINE ((++ $"when_helper") "body") (++ "({body;}):"$"when_helper_2"))
-   (DEFINE ((++ $"when_helper_2") "body") "({body;}))")
-
-   ;;(DEFINE ("case" "type" "x") (++ "({(type) "temp1";switch(x){"$"case_helper"))
-   ;;(DEFINE ((++ $"case_helper") ...) (++ $"map("$"case_helper_each,"VA_ARGS")"))
 
    (LINE "#ifdef __cplusplus")
    prelude-cpp
@@ -110,6 +107,18 @@
    prelude-gcc
    (LINE "#endif")
 
+   (DEFINE ("when" "b") (++ "((b)?"$"when_helper"))
+   (DEFINE ((+$"when_helper") "body") (++ "({body;}):"$"when_helper_2"))
+   (DEFINE ((+$"when_helper_2") "body") "({body;}))")
+
+   (DEFINE ("case_the" "type" "x") (++ "({(type) "temp1";switch(x){"$"case_helper"))
+   (DEFINE ("case" "x") (APP "case_the" "let" "x"))
+   (DEFINE ((+$"case_helper") ...) (++ $"map("$"case_helper_each",VA_ARGS")}"temp1";})"))
+   (DEFINE ((+$"case_helper_each") "condition" "body") (++ (APP (+$"concat") (+$"case_helper_cond") "condition")temp1"=({body;});break;"))
+   (DEFINE-V (+$"case_helper_cond_default") "default:")
+   ;; ... can't be empty here
+   (DEFINE ((+$"case_helper_cond") ...) (++ $"map("$"case_helper_cond_each,"VA_ARGS")"))
+   (DEFINE ((+$"case_helper_cond_each") "x") "case (x):")
    )}
 
 (display-to-file prelude "prelude.h" #:exists 'replace)
