@@ -51,23 +51,36 @@
          19,18,17,16,15,14,13,12,11,10, \
          9,8,7,6,5,4,3,2,1,0\n")}
 
+{define prelude-cpp
+  (BEGIN
+   (DEFINE "let" "auto"))}
+{define prelude-gcc
+  (BEGIN
+   (DEFINE "let" "__auto_type"))}
+
 {define prelude
   (BEGIN
+
+   (LINE "#ifdef __cplusplus")
+   prelude-cpp
+   (LINE "#else")
+   prelude-gcc
+   (LINE "#endif")
+   
    PP_NARG
    (apply ++ (map (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))) (range 1 N)))
       (DEFINE ((++ $"concat0") "x" "y") "x##y")
    (DEFINE ((++ $"concat") "x" "y") (++ $"concat0(x,y)"))
    (DEFINE ((++ $"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
-   (DEFINE "let" "auto")
-   (DEFINE ("begin" "body") "({body})")
-   (DEFINE ("start" "body") "{return ({body});}")
+   (DEFINE ("begin" "body") "({body;})")
+   (DEFINE ("start" "body") "{return ({body;});}")
    (DEFINE ("the" "type" "value") (++ "({(type) "temp1"=(value);"temp1"})"))
    (DEFINE ("as" "type" "value") "(type)(value)")
    (DEFINE-FUNC local-inline ("mkvoid") -> Void "")
    
    (DEFINE ("when" "b") (++ "((b)?"$"when_helper"))
-   (DEFINE ((++ $"when_helper") "body") (++ "({body}):"$"when_helper_2"))
-   (DEFINE ((++ $"when_helper_2") "body") "({body}))")
+   (DEFINE ((++ $"when_helper") "body") (++ "({body;}):"$"when_helper_2"))
+   (DEFINE ((++ $"when_helper_2") "body") "({body;}))")
 
    ;;(DEFINE ("case" "type" "x") (++ "({(type) "temp1";switch(x){"$"case_helper"))
    ;;(DEFINE ((++ $"case_helper") ...) (++ $"map("$"case_helper_each,"VA_ARGS")"))
