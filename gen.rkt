@@ -74,7 +74,7 @@
    (DEFINE ("the" "type" "value") (++ "({(type) "temp1"=(value);"temp1"})"))
    (DEFINE ("as" "type" "value") "(type)(value)")
    (DEFINE-FUNC local-inline ("mkvoid") -> Void "")
-   
+
    (DEFINE ("when" "b") (++ "((b)?"$"when_helper"))
    (DEFINE ((++ $"when_helper") "body") (++ "({body;}):"$"when_helper_2"))
    (DEFINE ((++ $"when_helper_2") "body") "({body;}))")
