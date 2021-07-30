@@ -70,7 +70,6 @@
    (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"temp1";})"))
    (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
 
-   
    #|(DEFINE ((++ $"infer_helper_each") "x") "x;")
    (DEFINE ((++ $"infer_helper") ...) (++ $"map("$"infer_helper_each",VA_ARGS")"))
    (DEFINE ((++ $"infer") "args" "body") (++ "typeof(({"$"infer_helper args body;}))"))
