@@ -54,7 +54,7 @@
 {define prelude-cpp
   (BEGIN
    (DEFINE "let" "auto")
-   (DEFINE ("lambda" "type" "args") (++ "[&](args)->type "$"lambda_helper"))
+   (DEFINE ("lambda" "type" "args") (++ "[&]args->type "$"lambda_helper"))
    (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}")))}
 {define prelude-gcc
   (BEGIN
