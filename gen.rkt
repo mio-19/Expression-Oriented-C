@@ -58,12 +58,27 @@
   (BEGIN
    (DEFINE "let" "auto")
    (DEFINE ((++ $"lambda") "type" "args") (++ "[&]args->type "$"lambda_helper"))
-   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}")))}
+   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"))
+   (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
+
+   (DEFINE ("lambda" ...) (++ "[&]args "$"lambda_helper"))
+   )}
 {define prelude-gcc
   (BEGIN
    (DEFINE "let" "__auto_type")
    (DEFINE ((++ $"lambda") "type" "args") (++ "({type "temp1" args "$"lambda_helper"))
-   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"temp1";})")))}
+   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"temp1";})"))
+   (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
+   
+   (DEFINE ((++ $"infer_helper_each") "x") "x;")
+   (DEFINE ((++ $"infer_helper") ...) (++ $"map("$"infer_helper_each",VA_ARGS))
+   (DEFINE ((++ $"infer") "args" "body") (++ "typeof(({"$"infer_helper args body;}))"))
+   (DEFINE ((++ $"lambda_infer") "args" "body") (++ "({"$"infer(args, body) "temp1" args{return ({body;});}"temp1";})"))
+   ;; https://stackoverflow.com/questions/49979458/how-to-curry-a-c-c-macro/49979765#49979765
+   (DEFINE ((++ $"LPAREN")) "(")
+   (DEFINE ((++ $"RPAREN")) ")")
+   (DEFINE ("lambda" ...) (++ $"lambda_infer "$"LPAREN("VA_ARGS"),"$"lambda_helper_infer"))
+   (DEFINE ((++ $"lambda_helper_infer") "body") (++ "body "$"RPAREN")))}
 
 {define prelude
   (BEGIN
@@ -91,7 +106,6 @@
    prelude-gcc
    (LINE "#endif")
 
-   (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
    )}
 
 (display-to-file prelude "prelude.h" #:exists 'replace)
