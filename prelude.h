@@ -1,7 +1,11 @@
 #ifdef __cplusplus
 #define let auto
+#define lambda(type,args) [&](args)->type ___EOC___internal___WAHAHA___lambda_helper
+#define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}
 #else
 #define let __auto_type
+#define lambda(type,args) ({type ___EOC___temp___VARIABLE___1___ args ___EOC___internal___WAHAHA___lambda_helper
+#define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}___EOC___temp___VARIABLE___1___;})
 #endif
 #define ___EOC___internal___WAHAHA___PP_NARG(...) ___EOC___internal___WAHAHA___PP_NARG_(__VA_ARGS__,___EOC___internal___WAHAHA___PP_RSEQ_N())
 #define ___EOC___internal___WAHAHA___PP_NARG_(...) ___EOC___internal___WAHAHA___PP_ARG_N(__VA_ARGS__)

@@ -53,10 +53,14 @@
 
 {define prelude-cpp
   (BEGIN
-   (DEFINE "let" "auto"))}
+   (DEFINE "let" "auto")
+   (DEFINE ("lambda" "type" "args") (++ "[&](args)->type "$"lambda_helper"))
+   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}")))}
 {define prelude-gcc
   (BEGIN
-   (DEFINE "let" "__auto_type"))}
+   (DEFINE "let" "__auto_type")
+   (DEFINE ("lambda" "type" "args") (++ "({type "temp1" args "$"lambda_helper"))
+   (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"temp1";})")))}
 
 {define prelude
   (BEGIN
@@ -69,7 +73,7 @@
    
    PP_NARG
    (apply ++ (map (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))) (range 1 N)))
-      (DEFINE ((++ $"concat0") "x" "y") "x##y")
+   (DEFINE ((++ $"concat0") "x" "y") "x##y")
    (DEFINE ((++ $"concat") "x" "y") (++ $"concat0(x,y)"))
    (DEFINE ((++ $"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
    (DEFINE ("begin" "body") "({body;})")
