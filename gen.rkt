@@ -28,7 +28,7 @@
 
 {define N 64}
 
-{define (for-N f) (apply ++ (map f (range 1 N)))}
+{define (for-N f) (apply ++ (map f (range N)))}
 
 {define ~ number->string}
 
@@ -83,7 +83,7 @@
 {define prelude
   (BEGIN
    PP_NARG
-   (for-N (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))))
+   (for-N (λ (n) (DEFINE ((++ $"map_"(~ n)) (apply LIST (cons "f" (map (λ (x) (++ "n"(~ x))) (range n))))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))))
    (DEFINE ((++ $"concat0") "x" "y") "x##y")
    (DEFINE ((++ $"concat") "x" "y") (++ $"concat0(x,y)"))
    (DEFINE ((++ $"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
