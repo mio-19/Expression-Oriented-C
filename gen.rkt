@@ -10,6 +10,7 @@
     [(_ id x) (LINE "#define "id" "x)]}}
 {define ... "..."}
 {define VA_ARGS "__VA_ARGS__"}
+{define ,VA_ARGS ",##__VA_ARGS__"}
 
 {define-syntax DEFINE-FUNC
   {syntax-rules (: ->)
@@ -26,6 +27,8 @@
 {define Void "void"}
 
 {define N 64}
+
+{define (for-N f) (apply ++ (map f (range 1 N)))}
 
 {define ~ number->string}
 
@@ -54,18 +57,18 @@
 {define prelude-cpp
   (BEGIN
    (DEFINE "let" "auto")
-   (DEFINE ("lambda" "type" "args") (++ "[&]args->type "$"lambda_helper"))
+   (DEFINE ((++ $"lambda") "type" "args") (++ "[&]args->type "$"lambda_helper"))
    (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}")))}
 {define prelude-gcc
   (BEGIN
    (DEFINE "let" "__auto_type")
-   (DEFINE ("lambda" "type" "args") (++ "({type "temp1" args "$"lambda_helper"))
+   (DEFINE ((++ $"lambda") "type" "args") (++ "({type "temp1" args "$"lambda_helper"))
    (DEFINE ((++ $"lambda_helper") "body") (++ "{return ({body;});}"temp1";})")))}
 
 {define prelude
   (BEGIN
    PP_NARG
-   (apply ++ (map (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))) (range 1 N)))
+   (for-N (λ (n) (DEFINE ((++ $"map_"(~ n)) "f" (apply LIST (map (λ (x) (++ "n"(~ x))) (range n)))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))))
    (DEFINE ((++ $"concat0") "x" "y") "x##y")
    (DEFINE ((++ $"concat") "x" "y") (++ $"concat0(x,y)"))
    (DEFINE ((++ $"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
@@ -87,7 +90,8 @@
    (LINE "#else")
    prelude-gcc
    (LINE "#endif")
-   
+
+   (DEFINE ("lambda_returns" "type" ...) (++ $"lambda(type,("VA_ARGS"))"))
    )}
 
 (display-to-file prelude "prelude.h" #:exists 'replace)

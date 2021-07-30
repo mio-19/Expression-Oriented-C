@@ -78,10 +78,11 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___when_helper_2(body) ({body;}))
 #ifdef __cplusplus
 #define let auto
-#define lambda(type,args) [&]args->type ___EOC___internal___WAHAHA___lambda_helper
+#define ___EOC___internal___WAHAHA___lambda(type,args) [&]args->type ___EOC___internal___WAHAHA___lambda_helper
 #define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}
 #else
 #define let __auto_type
-#define lambda(type,args) ({type ___EOC___temp___VARIABLE___1___ args ___EOC___internal___WAHAHA___lambda_helper
+#define ___EOC___internal___WAHAHA___lambda(type,args) ({type ___EOC___temp___VARIABLE___1___ args ___EOC___internal___WAHAHA___lambda_helper
 #define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}___EOC___temp___VARIABLE___1___;})
 #endif
+#define lambda_returns(type,...) ___EOC___internal___WAHAHA___lambda(type,(__VA_ARGS__))
