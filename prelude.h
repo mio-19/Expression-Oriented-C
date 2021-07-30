@@ -82,7 +82,7 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___lambda(type,args) [&]args->type ___EOC___internal___WAHAHA___lambda_helper
 #define ___EOC___internal___WAHAHA___lambda_helper(body) {return ({body;});}
 #define lambda_returns(type,...) ___EOC___internal___WAHAHA___lambda(type,(__VA_ARGS__))
-#define lambda(...) [&]args ___EOC___internal___WAHAHA___lambda_helper
+#define function(args,body) [&]args{return ({body;});
 #else
 #define let __auto_type
 #define ___EOC___internal___WAHAHA___lambda(type,args) ({type ___EOC___temp___VARIABLE___1___ args ___EOC___internal___WAHAHA___lambda_helper
@@ -91,9 +91,5 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___infer_helper_each(x) x;
 #define ___EOC___internal___WAHAHA___infer_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___infer_helper_each,##__VA_ARGS__)
 #define ___EOC___internal___WAHAHA___infer(args,body) typeof(({___EOC___internal___WAHAHA___infer_helper args body;}))
-#define ___EOC___internal___WAHAHA___lambda_infer(args,body) ({___EOC___internal___WAHAHA___infer(args, body) ___EOC___temp___VARIABLE___1___ args{return ({body;});}___EOC___temp___VARIABLE___1___;})
-#define ___EOC___internal___WAHAHA___LPAREN() (
-#define ___EOC___internal___WAHAHA___RPAREN() )
-#define lambda(...) ___EOC___internal___WAHAHA___lambda_infer ___EOC___internal___WAHAHA___LPAREN(__VA_ARGS__),___EOC___internal___WAHAHA___lambda_helper_infer
-#define ___EOC___internal___WAHAHA___lambda_helper_infer(body) body ___EOC___internal___WAHAHA___RPAREN
+#define function(args,body) ({___EOC___internal___WAHAHA___infer(args, body) ___EOC___temp___VARIABLE___1___ args{return ({body;});}___EOC___temp___VARIABLE___1___;})
 #endif
