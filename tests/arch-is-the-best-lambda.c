@@ -4,7 +4,7 @@
 int main(void) start(
    let arch_best = lambda_returns(void)(puts("Arch is the best!"); mkvoid());
    void (*arch_best2)(int) = lambda_returns(void, int x)(printf("Arch is the best! %d\n", x);mkvoid());
-   void (*arch_best3)(int) = function((int x),printf("Arch is the best! %d\n", x);mkvoid());
+   let arch_best3 = function((int x),printf("Arch is the best! %d\n", x);mkvoid());
    arch_best();
    arch_best2(9999);
    EXIT_SUCCESS)
