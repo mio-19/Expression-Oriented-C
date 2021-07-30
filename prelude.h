@@ -68,6 +68,7 @@
 #define ___EOC___internal___WAHAHA___map_63(f,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,n21,n22,n23,n24,n25,n26,n27,n28,n29,n30,n31,n32,n33,n34,n35,n36,n37,n38,n39,n40,n41,n42,n43,n44,n45,n46,n47,n48,n49,n50,n51,n52,n53,n54,n55,n56,n57,n58,n59,n60,n61,n62) f(n0)f(n1)f(n2)f(n3)f(n4)f(n5)f(n6)f(n7)f(n8)f(n9)f(n10)f(n11)f(n12)f(n13)f(n14)f(n15)f(n16)f(n17)f(n18)f(n19)f(n20)f(n21)f(n22)f(n23)f(n24)f(n25)f(n26)f(n27)f(n28)f(n29)f(n30)f(n31)f(n32)f(n33)f(n34)f(n35)f(n36)f(n37)f(n38)f(n39)f(n40)f(n41)f(n42)f(n43)f(n44)f(n45)f(n46)f(n47)f(n48)f(n49)f(n50)f(n51)f(n52)f(n53)f(n54)f(n55)f(n56)f(n57)f(n58)f(n59)f(n60)f(n61)f(n62)
 #define ___EOC___internal___WAHAHA___concat0(x,y) x##y
 #define ___EOC___internal___WAHAHA___concat(x,y) ___EOC___internal___WAHAHA___concat0(x,y)
+#define ___EOC___internal___WAHAHA___together(x,y) x y
 #define ___EOC___internal___WAHAHA___map(f,...) ___EOC___internal___WAHAHA___concat(___EOC___internal___WAHAHA___map_,___EOC___internal___WAHAHA___PP_NARG(__VA_ARGS__))(f,__VA_ARGS__)
 #define begin(body) ({body;})
 #define start(body) {return ({body;});}
@@ -95,8 +96,9 @@ static inline void mkvoid(void){}
 #define ___EOC___internal___WAHAHA___when_helper_2(body) ({body;}))
 #define case_the(type,x) ({(type) ___EOC___temp___VARIABLE___1___;switch(x){___EOC___internal___WAHAHA___case_helper
 #define case(x) case_the(let,x)
-#define ___EOC___internal___WAHAHA___case_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___case_helper_each,##__VA_ARGS__)}___EOC___temp___VARIABLE___1___;})
-#define ___EOC___internal___WAHAHA___case_helper_each(condition,body) ___EOC___internal___WAHAHA___concat(___EOC___internal___WAHAHA___case_helper_cond,condition)___EOC___temp___VARIABLE___1___=({body;});break;
+#define ___EOC___internal___WAHAHA___case_helper(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___case_helper_each0,##__VA_ARGS__)}___EOC___temp___VARIABLE___1___;})
+#define ___EOC___internal___WAHAHA___case_helper_each0(xs) ___EOC___internal___WAHAHA___together(___EOC___internal___WAHAHA___case_helper_each,xs)
+#define ___EOC___internal___WAHAHA___case_helper_each(condition,body) ___EOC___internal___WAHAHA___together(___EOC___internal___WAHAHA___case_helper_cond,condition)___EOC___temp___VARIABLE___1___=({body;});break;
 #define ___EOC___internal___WAHAHA___case_helper_cond_default default:
 #define ___EOC___internal___WAHAHA___case_helper_cond(...) ___EOC___internal___WAHAHA___map(___EOC___internal___WAHAHA___case_helper_cond_each,__VA_ARGS__)
 #define ___EOC___internal___WAHAHA___case_helper_cond_each(x) case (x):

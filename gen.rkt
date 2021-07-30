@@ -94,6 +94,7 @@
    (for-N (λ (n) (DEFINE ((++ $"map_"(~ n)) (apply LIST (cons "f" (map (λ (x) (++ "n"(~ x))) (range n))))) (apply ++ (map (λ (x) (++ "f(n"(~ x)")")) (range n))))))
    (DEFINE ((+$"concat0") "x" "y") "x##y")
    (DEFINE ((+$"concat") "x" "y") (++ $"concat0(x,y)"))
+   (DEFINE ((+$"together") "x" "y") "x y")
    (DEFINE ((+$"map") "f" ...) (++ $"concat("$"map_,"$"PP_NARG("VA_ARGS"))(f,"VA_ARGS")"))
    (DEFINE ("begin" "body") "({body;})")
    (DEFINE ("start" "body") "{return ({body;});}")
@@ -113,8 +114,9 @@
 
    (DEFINE ("case_the" "type" "x") (++ "({(type) "temp1";switch(x){"$"case_helper"))
    (DEFINE ("case" "x") (APP "case_the" "let" "x"))
-   (DEFINE ((+$"case_helper") ...) (++ $"map("$"case_helper_each",VA_ARGS")}"temp1";})"))
-   (DEFINE ((+$"case_helper_each") "condition" "body") (++ (APP (+$"concat") (+$"case_helper_cond") "condition")temp1"=({body;});break;"))
+   (DEFINE ((+$"case_helper") ...) (++ $"map("$"case_helper_each0",VA_ARGS")}"temp1";})"))
+   (DEFINE ((+$"case_helper_each0") "xs") (APP (+$"together") (+$"case_helper_each") "xs"))
+   (DEFINE ((+$"case_helper_each") "condition" "body") (++ (APP (+$"together") (+$"case_helper_cond") "condition")temp1"=({body;});break;"))
    (DEFINE-V (+$"case_helper_cond_default") "default:")
    ;; ... can't be empty here
    (DEFINE ((+$"case_helper_cond") ...) (++ $"map("$"case_helper_cond_each,"VA_ARGS")"))
